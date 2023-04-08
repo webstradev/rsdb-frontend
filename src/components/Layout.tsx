@@ -17,11 +17,15 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { AppBar, Drawer } from "./AppBar";
 import { Copyright } from "./Copyright";
-import { mainListItems, secondaryListItems } from "./listitems";
+import { mainListItems } from "./listitems";
 
 const mdTheme = createTheme();
 
-export const Layout = () => {
+interface LayoutProps {
+  children: React.ReactNode;
+}
+
+export const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -56,7 +60,7 @@ export const Layout = () => {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+              Rights Stuff Database
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -79,11 +83,7 @@ export const Layout = () => {
             </IconButton>
           </Toolbar>
           <Divider />
-          <List component="nav">
-            {mainListItems}
-            <Divider sx={{ my: 1 }} />
-            {secondaryListItems}
-          </List>
+          <List component="nav">{mainListItems}</List>
         </Drawer>
         <Box
           component="main"
@@ -99,7 +99,10 @@ export const Layout = () => {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Copyright />
+            {props.children}
+            <Box pt={4}>
+              <Copyright />
+            </Box>
           </Container>
         </Box>
       </Box>
