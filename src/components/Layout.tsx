@@ -17,7 +17,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { AppBar, Drawer } from "./AppBar";
 import { Copyright } from "./Copyright";
-import { mainListItems } from "./listitems";
+import { navBarRoutes } from "../routes/routes";
 
 const mdTheme = createTheme();
 
@@ -83,7 +83,7 @@ export const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
             </IconButton>
           </Toolbar>
           <Divider />
-          <List component="nav">{mainListItems}</List>
+          <List component="nav">{navBarRoutes}</List>
         </Drawer>
         <Box
           component="main"
