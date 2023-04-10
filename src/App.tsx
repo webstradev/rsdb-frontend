@@ -1,5 +1,5 @@
-import { Layout } from "./components/Layout";
-import { ROUTES } from "./routes/routes.tsx";
+import { Layout } from "components/Layout";
+import { ROUTES } from "routes/routes";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const AppRouter = createBrowserRouter(

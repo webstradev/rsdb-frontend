@@ -17,7 +17,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { AppBar, Drawer } from "./AppBar";
 import { Copyright } from "./Copyright";
-import { navBarRoutes } from "../routes/routes";
+import { navBarRoutes } from "routes/routes";
 
 const mdTheme = createTheme();
 
