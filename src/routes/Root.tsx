@@ -1,23 +1,45 @@
 import React, { useState, useEffect } from "react";
 import { api } from "../api";
-import { Typography } from "@mui/material";
+import { Typography, Grid } from "@mui/material";
+
+interface CountsResponse {
+  articles: number;
+  platforms: number;
+  projects: number;
+  contacts: number;
+}
 
 export const Root: React.FC = () => {
-  const [healthy, setHealthy] = useState(false);
-
+  const [counts, setCounts] = useState<CountsResponse | null>(null);
   useEffect(() => {
-    const checkStatus = async () => {
-      const res = await api.get("/health");
+    const getCounts = async () => {
+      const res = await api.get("/v1/counts");
 
-      setTimeout(() => setHealthy(res.status === 200), 100);
+      setCounts(res.data);
     };
 
-    checkStatus();
+    getCounts();
   }, []);
 
   return (
-    <Typography component="h2">
-      This is the Root Page! The server is {!healthy && "un"}healthy
-    </Typography>
+    <Grid>
+      <Typography component="h2">This is the Root Page!</Typography>
+      {counts && (
+        <>
+          <Typography component="h2">
+            There are {counts?.platforms} platforms
+          </Typography>
+          <Typography component="h2">
+            There are {counts?.articles} articles
+          </Typography>
+          <Typography component="h2">
+            There are {counts?.projects} projects
+          </Typography>
+          <Typography component="h2">
+            There are {counts?.contacts} contacts
+          </Typography>
+        </>
+      )}
+    </Grid>
   );
 };
