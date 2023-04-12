@@ -1,7 +1,3 @@
-import { Root } from "./Root";
-import { Platforms } from "./Platforms/Platforms";
-import { Articles } from "./Articles/Articles";
-import { Projects } from "./Projects/Projects";
 import React from "react";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -11,6 +7,13 @@ import NewspaperIcon from "@mui/icons-material/Newspaper";
 import WorkIcon from "@mui/icons-material/Work";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import { Link as RouterLink } from "react-router-dom";
+
+// Route components
+import { Root } from "./Root";
+import { Platforms } from "routes/Platforms/Platforms";
+import { Articles } from "routes/Articles/Articles";
+import { Projects } from "routes/Projects/Projects";
+import { Login } from "routes/Login";
 
 export const ROUTES = [
   {
@@ -37,17 +40,28 @@ export const ROUTES = [
     navBarIcon: VideocamIcon,
     component: <Projects />,
   },
+  {
+    path: "/login",
+    component: <Login />,
+  },
 ];
 
 export const navBarRoutes = (
   <React.Fragment>
-    {ROUTES.map((route) => (
-      <ListItemButton key={route.path} component={RouterLink} to={route.path}>
-        <ListItemIcon>
-          <route.navBarIcon />
-        </ListItemIcon>
-        <ListItemText primary={route.navBarTitle} />
-      </ListItemButton>
-    ))}
+    {ROUTES.map(
+      (route) =>
+        route.navBarTitle && (
+          <ListItemButton
+            key={route.path}
+            component={RouterLink}
+            to={route.path}
+          >
+            <ListItemIcon>
+              <route.navBarIcon />
+            </ListItemIcon>
+            <ListItemText primary={route.navBarTitle} />
+          </ListItemButton>
+        )
+    )}
   </React.Fragment>
 );
