@@ -2,7 +2,7 @@ import { createContext, useContext } from "react";
 
 export const STORAGE_TOKEN = "token";
 
-interface UserData {
+export interface UserData {
   id: number;
   email: string;
   role: string;
@@ -10,7 +10,7 @@ interface UserData {
 
 export type UserContextType = {
   userData: UserData;
-  login: (token: string, email: string, role: string) => void;
+  login: (token: string, user: UserData) => void;
   logout: () => void;
 };
 
@@ -18,11 +18,11 @@ export const emptyUserData = {
   id: 0,
   email: "",
   role: "user",
-};
+} as UserData;
 
 const emptyUserContext = {
   userData: emptyUserData,
-  login: (_token: string, _email: string, _role: string) => {},
+  login: (_token: string, _user: UserData) => {},
   logout: () => {},
 };
 
