@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -8,9 +9,13 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { api } from "util/api";
+import { useAuthentication } from "util/useAuthentication";
 
 export const Login: React.FC = () => {
+  const navigate = useNavigate();
   const [error, setError] = React.useState("");
+  const { login } = useAuthentication();
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -19,7 +24,16 @@ export const Login: React.FC = () => {
         email: data.get("email"),
         password: data.get("password"),
       });
-      console.log(res);
+      const { token, user } = res.data;
+      // Set authentication data in context
+      login(token, {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+      });
+
+      // Redirect to the home page
+      navigate("/");
     } catch (error) {
       setError("Invalid username or password");
     }
