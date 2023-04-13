@@ -1,31 +1,44 @@
 import React, { useState } from "react";
 import { Layout } from "components/Layout";
+import { AuthenticatedRoute } from "components/AuthenticatedRoute";
 import { ROUTES } from "routes/routes";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useRoutes } from "react-router-dom";
 import {
   UserData,
   emptyUserData,
-  STORAGE_TOKEN,
+  STORAGE_KEY,
   UserContext,
 } from "util/useAuthentication";
 
-const AppRouter = createBrowserRouter(
-  ROUTES.map((route) => {
-    const { path, component } = route;
+const routes = [
+  {
+    path: "/",
+    Component: Layout,
+    children: ROUTES.map((route) => {
+      const { path, authenticated, component } = route;
 
-    return {
-      path: path,
-      element: <Layout>{component}</Layout>,
-    };
-  })
-);
+      return {
+        path: path,
+        element: authenticated ? (
+          <AuthenticatedRoute path={path}>{component}</AuthenticatedRoute>
+        ) : (
+          component
+        ),
+      };
+    }),
+  },
+];
 
 export const App: React.FC = () => {
-  const [userData, setUserData] = useState(emptyUserData);
+  const cachedUserDataString = localStorage.getItem(STORAGE_KEY);
+  const data = cachedUserDataString
+    ? JSON.parse(cachedUserDataString)
+    : emptyUserData;
+  const [userData, setUserData] = useState(data);
 
-  const login = (token: string, user: UserData) => {
+  const login = (user: UserData) => {
     // Store jwt in browser storage
-    localStorage.setItem(STORAGE_TOKEN, token);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
 
     // Set data in context
     setUserData(user);
@@ -33,11 +46,13 @@ export const App: React.FC = () => {
 
   const logout = () => {
     // Remove jwt from browser storage
-    localStorage.removeItem(STORAGE_TOKEN);
+    localStorage.removeItem(STORAGE_KEY);
 
     // Reset user data in context
     setUserData(emptyUserData);
   };
+
+  const element = useRoutes(routes);
 
   return (
     <div className="App">
@@ -48,7 +63,7 @@ export const App: React.FC = () => {
           logout,
         }}
       >
-        <RouterProvider router={AppRouter} />
+        {element}
       </UserContext.Provider>
     </div>
   );

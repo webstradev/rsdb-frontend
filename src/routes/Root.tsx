@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { api } from "util/api";
 import { Typography, Grid } from "@mui/material";
+import { useAuthentication } from "util/useAuthentication";
+import { useNavigate } from "react-router-dom";
 
 interface CountsResponse {
   articles: number;
@@ -11,11 +13,19 @@ interface CountsResponse {
 
 export const Root: React.FC = () => {
   const [counts, setCounts] = useState<CountsResponse | null>(null);
+  const { logout } = useAuthentication();
+  const navigate = useNavigate();
   useEffect(() => {
     const getCounts = async () => {
-      const res = await api.get("/v1/counts");
-
-      setCounts(res.data);
+      try {
+        const res = await api.get("/v1/counts");
+        setCounts(res.data);
+      } catch (e: any) {
+        if (e.response?.status === 401) {
+          logout();
+          navigate("/login");
+        }
+      }
     };
 
     getCounts();

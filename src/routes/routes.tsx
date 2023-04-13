@@ -16,52 +16,56 @@ import { Projects } from "routes/Projects/Projects";
 import { Login } from "routes/Login";
 
 export const ROUTES = [
-  {
-    path: "/",
-    navBarTitle: "Dashboard",
-    navBarIcon: DashboardIcon,
-    component: <Root />,
-  },
-  {
-    path: "/platforms",
-    navBarTitle: "Platforms",
-    navBarIcon: WorkIcon,
-    component: <Platforms />,
-  },
-  {
-    path: "/articles",
-    navBarTitle: "Articles",
-    navBarIcon: NewspaperIcon,
-    component: <Articles />,
-  },
-  {
-    path: "/projects",
-    navBarTitle: "Projects",
-    navBarIcon: VideocamIcon,
-    component: <Projects />,
-  },
-  {
-    path: "/login",
-    component: <Login />,
-  },
+	{
+		path: "/",
+		authenticated: true,
+		navBarTitle: "Dashboard",
+		navBarIcon: DashboardIcon,
+		component: <Root />,
+	},
+	{
+		path: "/platforms",
+		authenticated: true,
+		navBarTitle: "Platforms",
+		navBarIcon: WorkIcon,
+		component: <Platforms />,
+	},
+	{
+		path: "/articles",
+		authenticated: true,
+		navBarTitle: "Articles",
+		navBarIcon: NewspaperIcon,
+		component: <Articles />,
+	},
+	{
+		path: "/projects",
+		authenticated: true,
+		navBarTitle: "Projects",
+		navBarIcon: VideocamIcon,
+		component: <Projects />,
+	},
+	{
+		path: "/login",
+		component: <Login />,
+	},
 ];
 
 export const navBarRoutes = (
-  <React.Fragment>
-    {ROUTES.map(
-      (route) =>
-        route.navBarTitle && (
-          <ListItemButton
-            key={route.path}
-            component={RouterLink}
-            to={route.path}
-          >
-            <ListItemIcon>
-              <route.navBarIcon />
-            </ListItemIcon>
-            <ListItemText primary={route.navBarTitle} />
-          </ListItemButton>
-        )
-    )}
-  </React.Fragment>
+	<React.Fragment>
+		{ROUTES.map(
+			(route) =>
+				route.navBarTitle && (
+					<ListItemButton
+						key={route.path}
+						component={RouterLink}
+						to={route.path}
+					>
+						<ListItemIcon>
+							<route.navBarIcon />
+						</ListItemIcon>
+						<ListItemText primary={route.navBarTitle} />
+					</ListItemButton>
+				)
+		)}
+	</React.Fragment>
 );

@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,6 +13,7 @@ import { useAuthentication } from "util/useAuthentication";
 
 export const Login: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [error, setError] = React.useState("");
   const { login } = useAuthentication();
 
@@ -26,15 +27,18 @@ export const Login: React.FC = () => {
       });
       const { token, user } = res.data;
       // Set authentication data in context
-      login(token, {
+      login({
         id: user.id,
         email: user.email,
         role: user.role,
+        token,
       });
 
-      // Redirect to the home page
-      navigate("/");
+      // Redirect to the home page or the requestedPath
+      const path = location.state?.requestedPath || "/";
+      navigate(path);
     } catch (error) {
+      console.log(error);
       setError("Invalid username or password");
     }
   };

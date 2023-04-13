@@ -1,4 +1,5 @@
 import React from "react";
+import { Outlet } from "react-router-dom";
 import {
   CssBaseline,
   Toolbar,
@@ -18,18 +19,19 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { AppBar, Drawer } from "./AppBar";
 import { Copyright } from "./Copyright";
 import { navBarRoutes } from "routes/routes";
+import { useAuthentication } from "util/useAuthentication";
+import { UserMenu } from "components/UserMenu";
 
 const mdTheme = createTheme();
 
-interface LayoutProps {
-  children: React.ReactNode;
-}
-
-export const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
+export const Layout: React.FC = () => {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
+  const { userData } = useAuthentication();
+
+  const loggedIn = userData.id > 0;
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -67,6 +69,7 @@ export const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
+            {loggedIn && <UserMenu />}
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -99,7 +102,7 @@ export const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            {props.children}
+            <Outlet />
             <Box pt={4}>
               <Copyright />
             </Box>
