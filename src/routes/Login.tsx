@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -11,12 +11,18 @@ import { api } from "util/api";
 import { useAuthentication } from "util/useAuthentication";
 
 export const Login: React.FC = () => {
-  const [error, setError] = React.useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const { login } = useAuthentication();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    if (loading) return;
+
+    setLoading(true);
+
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+
     try {
       const res = await api.post("/v1/login", {
         email: data.get("email"),
@@ -33,6 +39,8 @@ export const Login: React.FC = () => {
     } catch (error) {
       console.log(error);
       setError("Invalid username or password");
+    } finally {
+      setLoading(false);
     }
   };
 
