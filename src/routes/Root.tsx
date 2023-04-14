@@ -1,15 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { api } from "util/api";
+import React from "react";
 import { Typography, Grid } from "@mui/material";
-import { useAuthentication } from "util/useAuthentication";
-import { useNavigate } from "react-router-dom";
-import { useApiGet, TApiResponse } from "util/useApi";
+import { useApi, TApiResponse } from "util/useApi";
 
 export const Root: React.FC = () => {
-  const { logout } = useAuthentication();
-  const navigate = useNavigate();
-
-  const resp: TApiResponse = useApiGet("/v1/counts");
+  const resp: TApiResponse = useApi("get", "/v1/counts");
   const counts = resp.data;
 
   return (

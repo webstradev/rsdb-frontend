@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { api } from "util/api";
 import { useAuthentication } from "./useAuthentication";
+import { AxiosResponse, AxiosRequestConfig } from "axios";
 
 export type TApiResponse = {
   status: number;
@@ -8,9 +9,22 @@ export type TApiResponse = {
   data: any;
   error: any;
   loading: boolean;
+  sendToAPI: (body: any) => void;
 };
 
-export const useApiGet = (path: string): TApiResponse => {
+const apiMethodMap = {
+  post: api.post,
+  put: api.put,
+  delete: api.delete,
+} as {
+  [key: string]: <T = any, R = AxiosResponse<T>>(
+    url: string,
+    data?: any,
+    config?: AxiosRequestConfig
+  ) => Promise<R>;
+};
+
+export const useApi = (method: string, path: string): TApiResponse => {
   const [status, setStatus] = useState(0);
   const [statusText, setStatusText] = useState("");
   const [data, setData] = useState<any>(null);
@@ -19,28 +33,50 @@ export const useApiGet = (path: string): TApiResponse => {
 
   const { logout } = useAuthentication();
 
+  const handleResponse = (res: AxiosResponse) => {
+    setStatus(res.status);
+    setStatusText(res.statusText);
+    setData(res.data);
+    setError(null);
+  };
+
+  const handleError = (error: any) => {
+    if (error.response?.status === 401) {
+      logout();
+      return;
+    }
+    setError(error);
+  };
+
+  const sendToAPI = async (body?: any) => {
+    setLoading(true);
+    try {
+      const res = await apiMethodMap[method](path, body);
+      handleResponse(res);
+    } catch (error: any) {
+      handleError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const getFromAPI = async () => {
     setLoading(true);
-
     try {
       const res = await api.get(path);
-      setStatus(res.status);
-      setStatusText(res.statusText);
-      setData(res.data);
-      setError(null);
-      setLoading(false);
+      handleResponse(res);
     } catch (error: any) {
-      if (error.response?.status === 401) {
-        logout();
-      }
-      setError(error);
+      handleError(error);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
+
   useEffect(() => {
-    getFromAPI();
+    if (method === "get") {
+      getFromAPI();
+    }
   }, []);
 
-  return { status, statusText, data, error, loading };
+  return { status, statusText, data, error, loading, sendToAPI };
 };

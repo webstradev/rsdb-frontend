@@ -7,28 +7,27 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { api } from "util/api";
+import { useApi } from "util/useApi";
 import { useAuthentication } from "util/useAuthentication";
 
 export const Login: React.FC = () => {
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const loginResp = useApi("post", "/v1/login");
   const { login } = useAuthentication();
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    if (loading) return;
-
-    setLoading(true);
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    if (loginResp.loading) return;
 
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    try {
-      const res = await api.post("/v1/login", {
-        email: data.get("email"),
-        password: data.get("password"),
-      });
-      const { token, user } = res.data;
+    await loginResp.sendToAPI({
+      email: data.get("email"),
+      password: data.get("password"),
+    });
+
+    if (loginResp.status === 200) {
+      const { user, token } = loginResp.data;
       // Set authentication data in context
       login({
         id: user.id,
@@ -36,13 +35,12 @@ export const Login: React.FC = () => {
         role: user.role,
         token,
       });
-    } catch (error) {
-      console.log(error);
+    } else if (loginResp.status === 401) {
       setError("Invalid username or password");
-    } finally {
-      setLoading(false);
+    } else {
+      setError("Unable to authenticate due to server error");
     }
-  };
+  }
 
   return (
     <Container component="main" maxWidth="xs">
