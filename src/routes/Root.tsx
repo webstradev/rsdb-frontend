@@ -3,33 +3,14 @@ import { api } from "util/api";
 import { Typography, Grid } from "@mui/material";
 import { useAuthentication } from "util/useAuthentication";
 import { useNavigate } from "react-router-dom";
-
-interface CountsResponse {
-  articles: number;
-  platforms: number;
-  projects: number;
-  contacts: number;
-}
+import { useApiGet, TApiResponse } from "util/useApi";
 
 export const Root: React.FC = () => {
-  const [counts, setCounts] = useState<CountsResponse | null>(null);
   const { logout } = useAuthentication();
   const navigate = useNavigate();
-  useEffect(() => {
-    const getCounts = async () => {
-      try {
-        const res = await api.get("/v1/counts");
-        setCounts(res.data);
-      } catch (e: any) {
-        if (e.response?.status === 401) {
-          logout();
-          navigate("/login");
-        }
-      }
-    };
 
-    getCounts();
-  }, []);
+  const resp: TApiResponse = useApiGet("/v1/counts");
+  const counts = resp.data;
 
   return (
     <Grid>

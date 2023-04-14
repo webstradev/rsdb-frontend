@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Layout } from "components/Layout";
 import { AuthenticatedRoute } from "components/AuthenticatedRoute";
 import { ROUTES } from "routes/routes";
-import { useRoutes } from "react-router-dom";
+import { useRoutes, useNavigate, useLocation } from "react-router-dom";
 import {
   UserData,
   emptyUserData,
@@ -30,6 +30,9 @@ const routes = [
 ];
 
 export const App: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const cachedUserDataString = localStorage.getItem(STORAGE_KEY);
   const data = cachedUserDataString
     ? JSON.parse(cachedUserDataString)
@@ -42,6 +45,10 @@ export const App: React.FC = () => {
 
     // Set data in context
     setUserData(user);
+
+    // Redirect to the home page or the requestedPath
+    const path = location.state?.requestedPath || "/";
+    navigate(path);
   };
 
   const logout = () => {
@@ -50,6 +57,9 @@ export const App: React.FC = () => {
 
     // Reset user data in context
     setUserData(emptyUserData);
+
+    // Redirect to the login page
+    navigate("/");
   };
 
   const element = useRoutes(routes);
