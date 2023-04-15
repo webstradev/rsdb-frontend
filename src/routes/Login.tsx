@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useApi } from "util/useApi";
 import { useAuthentication } from "util/useAuthentication";
+import { AxiosResponse } from "axios";
 
 export const Login: React.FC = () => {
   const [error, setError] = useState("");
@@ -21,25 +22,28 @@ export const Login: React.FC = () => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    await loginResp.sendToAPI({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-
-    if (loginResp.status === 200) {
-      const { user, token } = loginResp.data;
-      // Set authentication data in context
-      login({
-        id: user.id,
-        email: user.email,
-        role: user.role,
-        token,
-      });
-    } else if (loginResp.status === 401) {
-      setError("Invalid username or password");
-    } else {
-      setError("Unable to authenticate due to server error");
-    }
+    await loginResp.sendToAPI(
+      {
+        email: data.get("email"),
+        password: data.get("password"),
+      },
+      (res: AxiosResponse) => {
+        if (res.status === 200) {
+          const { user, token } = res.data;
+          // Set authentication data in context
+          login({
+            id: user.id,
+            email: user.email,
+            role: user.role,
+            token,
+          });
+        } else if (loginResp.status === 401) {
+          setError("Invalid username or password");
+        } else {
+          setError("Unable to authenticate due to server error");
+        }
+      }
+    );
   }
 
   return (

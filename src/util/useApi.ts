@@ -9,7 +9,10 @@ export type TApiResponse = {
   data: any;
   error: any;
   loading: boolean;
-  sendToAPI: (body: any) => void;
+  sendToAPI: (
+    body: any,
+    responseCallback: (res: AxiosResponse) => void
+  ) => void;
 };
 
 const apiMethodMap = {
@@ -48,11 +51,16 @@ export const useApi = (method: string, path: string): TApiResponse => {
     setError(error);
   };
 
-  const sendToAPI = async (body?: any) => {
+  const sendToAPI = async (
+    body: any,
+    responseCallback: (res: AxiosResponse) => void
+  ) => {
     setLoading(true);
     try {
       const res = await apiMethodMap[method](path, body);
+      setStatus(res.status);
       handleResponse(res);
+      responseCallback(res);
     } catch (error: any) {
       handleError(error);
     } finally {
