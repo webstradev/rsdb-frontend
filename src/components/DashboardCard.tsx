@@ -1,3 +1,12 @@
+/**
+ * A card component that displays a count of items and title,
+ * and navigates to a given route when clicked.
+ *
+ * @param {string} title - The title of the card.
+ * @param {number} count - The count of items to display in the card.
+ * @param {string} to - The route to navigate to when the card is clicked.
+ * @returns A card component with title, count and navigation link.
+ */
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { Card, CardContent, Typography, useTheme } from "@mui/material";
