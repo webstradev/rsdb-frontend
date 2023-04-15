@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Layout } from "components/Layout";
 import { AuthenticatedRoute } from "components/AuthenticatedRoute";
 import { ROUTES } from "routes/routes";
+import { NotFound } from "routes/NotFound";
 import { useRoutes, useNavigate, useLocation } from "react-router-dom";
 import {
   UserData,
@@ -26,6 +27,10 @@ const routes = [
         ),
       };
     }),
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ];
 
