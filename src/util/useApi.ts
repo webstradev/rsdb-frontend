@@ -1,3 +1,10 @@
+/**
+ * Custom hook for making HTTP requests to the API using the Axios library.
+ * @param method The HTTP method to use (e.g. "get", "post", "put", "delete").
+ * @param path The API endpoint to send the request to.
+ * @returns An object containing the current status, status text, data, error, loading state,
+ * and a function to send a request to the API.
+ */
 import { useState, useEffect } from "react";
 import { api } from "util/api";
 import { useAuthentication } from "./useAuthentication";
@@ -53,14 +60,19 @@ export const useApi = (method: string, path: string): TApiResponse => {
 
   const sendToAPI = async (
     body: any,
-    responseCallback: (res: AxiosResponse) => void
+    // The optional response callback is to be used in cases where the state is needed in the same function
+    // that calls sendToAPI due to React not being able to guarantee that
+    // setState will have completed before completed execution.
+    responseCallback?: (res: AxiosResponse) => void
   ) => {
     setLoading(true);
     try {
       const res = await apiMethodMap[method](path, body);
       setStatus(res.status);
       handleResponse(res);
-      responseCallback(res);
+      if (responseCallback) {
+        responseCallback(res);
+      }
     } catch (error: any) {
       handleError(error);
     } finally {

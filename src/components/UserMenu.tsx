@@ -1,4 +1,9 @@
-import React from "react";
+import /**
+ * Component that renders a user menu with options to view user information and sign out.
+ * Uses the `useAuthentication` hook to retrieve user data and logout functionality.
+ * Uses the `useNavigate` hook to navigate to the login page after logging out.
+ */
+React from "react";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import { useAuthentication } from "util/useAuthentication";
 import { useNavigate } from "react-router-dom";

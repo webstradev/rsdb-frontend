@@ -1,3 +1,9 @@
+/**
+ * This file exports two components: AppBar and Drawer. They can be used to create a Material UI app bar and drawer
+ * with a fixed width. The drawer can be opened or closed depending on the `open` prop passed to the AppBar component.
+ *
+ * @packageDocumentation
+ */
 import { styled } from "@mui/material/styles";
 import {
   AppBar as MuiAppBar,
@@ -5,11 +11,11 @@ import {
   Drawer as MuiDrawer,
 } from "@mui/material";
 
+const drawerWidth: number = 240;
+
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
-
-const drawerWidth: number = 240;
 
 export const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",

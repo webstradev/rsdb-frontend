@@ -1,3 +1,10 @@
+/**
+ * The main layout component that provides a consistent look and feel for the
+ * entire app. It includes an app bar, a side drawer with navigation links,
+ * and a container for the content of the current page.
+ *
+ * @returns {ReactElement} The rendered layout component
+ */
 import React from "react";
 import { Outlet } from "react-router-dom";
 import {
