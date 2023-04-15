@@ -96,7 +96,7 @@ export const useApi = (method: string, path: string): TApiResponse => {
     if (method === "get") {
       getFromAPI();
     }
-  }, []);
+  }, [method, path]);
 
   return { status, statusText, data, error, loading, sendToAPI };
 };
