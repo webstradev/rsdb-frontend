@@ -18,7 +18,7 @@ export type TApiResponse = {
   loading: boolean;
   sendToAPI: (
     body: any,
-    responseCallback: (res: AxiosResponse) => void
+    responseCallback?: (res: AxiosResponse) => void
   ) => void;
 };
 
