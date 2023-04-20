@@ -12,9 +12,10 @@ import {
 } from "@mui/material";
 import { TablePaginationActions } from "components/TablePaginationActions";
 
-type TColumnDef = {
+export type TColumnDef = {
   key: string;
   header: string;
+  modifier?: (val: any) => any;
 };
 
 interface IPaginatedTableProps {
@@ -70,7 +71,11 @@ export const PaginatedTable: React.FC<IPaginatedTableProps> = ({
               }}
             >
               {columns.map((column) => (
-                <TableCell id={column.key}>{row[column.key]}</TableCell>
+                <TableCell id={column.key}>
+                  {!!column.modifier
+                    ? column.modifier(row[column.key])
+                    : row[column.key]}
+                </TableCell>
               ))}
             </TableRow>
           ))}
