@@ -13,6 +13,7 @@ import { Root } from "./Root";
 import { Platforms } from "routes/Platforms/Platforms";
 import { Platform } from "routes/Platforms/Platform";
 import { Articles } from "routes/Articles/Articles";
+import { Article } from "routes/Articles/Article";
 import { Projects } from "routes/Projects/Projects";
 import { Login } from "routes/Login";
 
@@ -42,6 +43,11 @@ export const ROUTES = [
     navBarTitle: "Articles",
     navBarIcon: NewspaperIcon,
     component: <Articles />,
+  },
+  {
+    path: "/articles/:id",
+    authenticated: true,
+    component: <Article />,
   },
   {
     path: "/projects",
