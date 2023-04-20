@@ -29,7 +29,19 @@ import { navBarRoutes } from "routes/routes";
 import { useAuthentication } from "util/useAuthentication";
 import { UserMenu } from "components/UserMenu";
 
-const mdTheme = createTheme();
+const mdTheme = createTheme({
+  components: {
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          "&:focus": {
+            outline: "none",
+          },
+        },
+      },
+    },
+  },
+});
 
 export const Layout: React.FC = () => {
   const [open, setOpen] = React.useState(true);
