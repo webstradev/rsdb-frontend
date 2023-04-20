@@ -1,6 +1,6 @@
 import React, { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import {
-  CircularProgress,
   Typography,
   Paper,
   Table,
@@ -11,14 +11,18 @@ import {
   TableRow,
   TableCell,
   useTheme,
+  LinearProgress,
 } from "@mui/material";
 import { useApi } from "util/useApi";
 import { TablePaginationActions } from "components/TablePaginationActions";
 
 export const Platforms: React.FC = () => {
   const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
-  const { data, loading, error } = useApi("get", `/v1/platforms?page=${page}`);
+  const [pageSize, setPageSize] = useState(5);
+  const { data, loading, error } = useApi(
+    "get",
+    `/v1/platforms?page=${page}&pageSize=${pageSize}`
+  );
   const theme = useTheme();
 
   return (
@@ -38,11 +42,16 @@ export const Platforms: React.FC = () => {
         </Typography>
         <Table>
           <TableHead>
-            <TableRow>
+            <TableRow
+              sx={{
+                "& > *": {
+                  fontWeight: "bold",
+                },
+              }}
+            >
               <TableCell>Name</TableCell>
               <TableCell>Categories</TableCell>
               <TableCell>Country</TableCell>
-              <TableCell>Website</TableCell>
               <TableCell>Contacts</TableCell>
               <TableCell>Articles</TableCell>
               <TableCell>Projects</TableCell>
@@ -52,11 +61,25 @@ export const Platforms: React.FC = () => {
           <TableBody>
             {data?.platforms &&
               data.platforms.map((platform: any) => (
-                <TableRow key={platform.id}>
+                <TableRow
+                  key={platform.id}
+                  component={RouterLink}
+                  to={`/platforms/${platform.id}`}
+                  sx={{
+                    "& > *": {
+                      borderBottom: "unset",
+                    },
+                    transition:
+                      "backgroundColor 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                    cursor: "pointer",
+                    "&:hover": {
+                      backgroundColor: theme.palette.grey[300],
+                    },
+                  }}
+                >
                   <TableCell>{platform.name}</TableCell>
                   <TableCell>{platform.categoryString}</TableCell>
                   <TableCell>{platform.country}</TableCell>
-                  <TableCell>{platform.website}</TableCell>
                   <TableCell>{platform.contactsCount}</TableCell>
                   <TableCell>{platform.articlesCount}</TableCell>
                   <TableCell>{platform.projectsCount}</TableCell>
@@ -72,7 +95,7 @@ export const Platforms: React.FC = () => {
                 rowsPerPage={pageSize}
                 labelRowsPerPage="Rows"
                 page={page}
-                rowsPerPageOptions={[10, 25, 50, 100]}
+                rowsPerPageOptions={[5, 10, 25, 50, 100]}
                 onPageChange={(e, newPage) => setPage(newPage)}
                 onRowsPerPageChange={(e) => {
                   setPage(0);
@@ -83,6 +106,7 @@ export const Platforms: React.FC = () => {
             </TableRow>
           </TableFooter>
         </Table>
+        {loading && <LinearProgress />}
       </Paper>
     </>
   );
