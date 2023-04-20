@@ -1,25 +1,22 @@
 import React, { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
-import {
-  Typography,
-  Paper,
-  Table,
-  TableHead,
-  TableBody,
-  TableFooter,
-  TablePagination,
-  TableRow,
-  TableCell,
-  useTheme,
-  LinearProgress,
-} from "@mui/material";
+import { Typography, Paper, useTheme, LinearProgress } from "@mui/material";
+import { PaginatedTable } from "components/PaginatedTable";
 import { useApi } from "util/useApi";
-import { TablePaginationActions } from "components/TablePaginationActions";
+
+const PLATFORM_COLUMNS = [
+  { key: "name", header: "Name" },
+  { key: "categoryString", header: "Categories" },
+  { key: "country", header: "Country" },
+  { key: "contactsCount", header: "Contacts" },
+  { key: "articlesCount", header: "Articles" },
+  { key: "projectsCount", header: "Projects" },
+  { key: "source", header: "Source" },
+];
 
 export const Platforms: React.FC = () => {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(5);
-  const { data, loading, error } = useApi(
+  const { data, loading } = useApi(
     "get",
     `/v1/platforms?page=${page}&pageSize=${pageSize}`
   );
@@ -40,72 +37,16 @@ export const Platforms: React.FC = () => {
         <Typography component="h2" variant="h5" color="primary" gutterBottom>
           Platforms
         </Typography>
-        <Table>
-          <TableHead>
-            <TableRow
-              sx={{
-                "& > *": {
-                  fontWeight: "bold",
-                },
-              }}
-            >
-              <TableCell>Name</TableCell>
-              <TableCell>Categories</TableCell>
-              <TableCell>Country</TableCell>
-              <TableCell>Contacts</TableCell>
-              <TableCell>Articles</TableCell>
-              <TableCell>Projects</TableCell>
-              <TableCell>Source</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data?.platforms &&
-              data.platforms.map((platform: any) => (
-                <TableRow
-                  key={platform.id}
-                  component={RouterLink}
-                  to={`/platforms/${platform.id}`}
-                  sx={{
-                    "& > *": {
-                      borderBottom: "unset",
-                    },
-                    transition:
-                      "backgroundColor 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
-                    cursor: "pointer",
-                    "&:hover": {
-                      backgroundColor: theme.palette.grey[300],
-                    },
-                  }}
-                >
-                  <TableCell>{platform.name}</TableCell>
-                  <TableCell>{platform.categoryString}</TableCell>
-                  <TableCell>{platform.country}</TableCell>
-                  <TableCell>{platform.contactsCount}</TableCell>
-                  <TableCell>{platform.articlesCount}</TableCell>
-                  <TableCell>{platform.projectsCount}</TableCell>
-                  <TableCell>{platform.source}</TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                colSpan={8}
-                count={data?.total}
-                rowsPerPage={pageSize}
-                labelRowsPerPage="Rows"
-                page={page}
-                rowsPerPageOptions={[5, 10, 25, 50, 100]}
-                onPageChange={(e, newPage) => setPage(newPage)}
-                onRowsPerPageChange={(e) => {
-                  setPage(0);
-                  setPageSize(+e.target.value);
-                }}
-                ActionsComponent={TablePaginationActions}
-              />
-            </TableRow>
-          </TableFooter>
-        </Table>
+        <PaginatedTable
+          columns={PLATFORM_COLUMNS}
+          rows={data?.platforms || []}
+          total={data?.total || 0}
+          url="platforms"
+          page={page}
+          setPage={setPage}
+          pageSize={pageSize}
+          setPageSize={setPageSize}
+        />
         {loading && <LinearProgress />}
       </Paper>
     </>
