@@ -15,6 +15,7 @@ import { Platform } from "routes/Platforms/Platform";
 import { Articles } from "routes/Articles/Articles";
 import { Article } from "routes/Articles/Article";
 import { Projects } from "routes/Projects/Projects";
+import { Project } from "routes/Projects/Project";
 import { Login } from "routes/Login";
 
 export const ROUTES = [
@@ -55,6 +56,11 @@ export const ROUTES = [
     navBarTitle: "Projects",
     navBarIcon: VideocamIcon,
     component: <Projects />,
+  },
+  {
+    path: "/projects/:id",
+    authenticated: true,
+    component: <Project />,
   },
   {
     path: "/login",

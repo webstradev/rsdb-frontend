@@ -2,11 +2,7 @@ import React, { useState } from "react";
 import { Typography, Paper, useTheme, LinearProgress } from "@mui/material";
 import { PaginatedTable, TColumnDef } from "components/PaginatedTable";
 import { useApi } from "util/useApi";
-
-type TSQLDateDef = {
-  Time: string;
-  Valid: boolean;
-};
+import { TSQLDateDef } from "types";
 
 const ARTICLES_COLUMNS = [
   {
