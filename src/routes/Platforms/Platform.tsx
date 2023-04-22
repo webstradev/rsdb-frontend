@@ -1,14 +1,13 @@
 import React from "react";
 import { useParams, Link as RouterLink } from "react-router-dom";
 import { useApi } from "util/useApi";
-import { Avatar, Box, Button, Grid, Typography } from "@mui/material";
+import { Avatar, Box, Button, Chip, Grid, Typography } from "@mui/material";
 import styled from "@mui/styled-engine";
 import { styled as styledComponent } from "@mui/material/styles";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PersonIcon from "@mui/icons-material/Person";
 import NewspaperIcon from "@mui/icons-material/Newspaper";
-import WorkIcon from "@mui/icons-material/Work";
 import VideocamIcon from "@mui/icons-material/Videocam";
 
 const PlatformWrapper = styled(Box)`
@@ -34,6 +33,8 @@ const AvatarWrapper = styledComponent(Avatar)(({ theme }) => ({
 export const Platform: React.FC = () => {
   const { id } = useParams();
   const { data: platform, loading } = useApi("get", `/v1/platforms/${id}`);
+
+  console.log(platform);
 
   return (
     <>
@@ -67,30 +68,33 @@ export const Platform: React.FC = () => {
                 </Box>
               </Box>
               <Box display="flex" alignItems="center" mb={2}>
-                <Button component={RouterLink} to={"#"}>
+                <Button component={RouterLink} to={`/platforms/${id}/contacts`}>
                   <PersonIcon fontSize="small" />
                   <Typography variant="subtitle2" ml={1} mr={2}>
                     {platform.contactsCount} Contacts
                   </Typography>
                 </Button>
-                <Button component={RouterLink} to={"#"}>
+                <Button component={RouterLink} to={`/platforms/${id}/articles`}>
                   <NewspaperIcon fontSize="small" />
                   <Typography variant="subtitle2" ml={1} mr={2}>
                     {platform.articlesCount} Articles
                   </Typography>
                 </Button>
-                <Button component={RouterLink} to={"#"}>
-                  <WorkIcon fontSize="small" />
-                  <Typography variant="subtitle2" ml={1}>
-                    {platform.platformsCount} Platforms
-                  </Typography>
-                </Button>
-                <Button component={RouterLink} to={"#"}>
+                <Button component={RouterLink} to={`/platforms/${id}/projects`}>
                   <VideocamIcon fontSize="small" />
                   <Typography variant="subtitle2" ml={1}>
                     {platform.projectsCount} Projects
                   </Typography>
                 </Button>
+              </Box>
+              <Box mb={2}>
+                {platform.categories.map((category: any) => (
+                  <Chip
+                    label={category.category}
+                    size="small"
+                    variant="outlined"
+                  />
+                ))}
               </Box>
               <Typography variant="subtitle1">{platform.website}</Typography>
               <Typography variant="subtitle1">{platform.country}</Typography>
