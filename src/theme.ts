@@ -11,5 +11,14 @@ export const mainTheme = createTheme({
         },
       },
     },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          "&:focus": {
+            outline: "none",
+          },
+        },
+      },
+    },
   },
 });

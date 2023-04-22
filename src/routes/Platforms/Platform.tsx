@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link as RouterLink } from "react-router-dom";
 import { useApi } from "util/useApi";
 import { Avatar, Box, Button, Grid, Typography } from "@mui/material";
 import styled from "@mui/styled-engine";
@@ -7,8 +7,9 @@ import { styled as styledComponent } from "@mui/material/styles";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PersonIcon from "@mui/icons-material/Person";
-import ArticleIcon from "@mui/icons-material/Article";
-import AppsIcon from "@mui/icons-material/Apps";
+import NewspaperIcon from "@mui/icons-material/Newspaper";
+import WorkIcon from "@mui/icons-material/Work";
+import VideocamIcon from "@mui/icons-material/Videocam";
 
 const PlatformWrapper = styled(Box)`
   background-color: #f7f7f7;
@@ -44,7 +45,7 @@ export const Platform: React.FC = () => {
             </Grid>
             <Grid item xs={10}>
               <Box display="flex" alignItems="center">
-                <Typography variant="h5" gutterBottom>
+                <Typography variant="h5" gutterBottom color="secondary">
                   {platform.name}
                 </Typography>
                 <Box marginLeft="auto">
@@ -66,22 +67,30 @@ export const Platform: React.FC = () => {
                 </Box>
               </Box>
               <Box display="flex" alignItems="center" mb={2}>
-                <AppsIcon fontSize="small" />
-                <Typography variant="subtitle1" ml={1} mr={2}>
-                  {platform.categoryString}
-                </Typography>
-                <PersonIcon fontSize="small" />
-                <Typography variant="subtitle1" ml={1} mr={2}>
-                  {platform.contactsCount} Contacts
-                </Typography>
-                <ArticleIcon fontSize="small" />
-                <Typography variant="subtitle1" ml={1} mr={2}>
-                  {platform.articlesCount} Articles
-                </Typography>
-                <AppsIcon fontSize="small" />
-                <Typography variant="subtitle1" ml={1}>
-                  {platform.platformsCount} Platforms
-                </Typography>
+                <Button component={RouterLink} to={"#"}>
+                  <PersonIcon fontSize="small" />
+                  <Typography variant="subtitle2" ml={1} mr={2}>
+                    {platform.contactsCount} Contacts
+                  </Typography>
+                </Button>
+                <Button component={RouterLink} to={"#"}>
+                  <NewspaperIcon fontSize="small" />
+                  <Typography variant="subtitle2" ml={1} mr={2}>
+                    {platform.articlesCount} Articles
+                  </Typography>
+                </Button>
+                <Button component={RouterLink} to={"#"}>
+                  <WorkIcon fontSize="small" />
+                  <Typography variant="subtitle2" ml={1}>
+                    {platform.platformsCount} Platforms
+                  </Typography>
+                </Button>
+                <Button component={RouterLink} to={"#"}>
+                  <VideocamIcon fontSize="small" />
+                  <Typography variant="subtitle2" ml={1}>
+                    {platform.projectsCount} Projects
+                  </Typography>
+                </Button>
               </Box>
               <Typography variant="subtitle1">{platform.website}</Typography>
               <Typography variant="subtitle1">{platform.country}</Typography>
