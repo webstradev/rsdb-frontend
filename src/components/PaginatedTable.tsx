@@ -1,3 +1,20 @@
+/**
+ * A paginated table component that renders a table with rows and columns.
+ * Each row contains a link to a specific page and can be modified with a modifier function.
+ *
+ * @param {TColumnDef[]} columns - An array of objects that defines the table columns with the following properties:
+ *   @property {string} key - A unique key for the column.
+ *   @property {string} header - The header text for the column.
+ *   @property {function} [modifier] - An optional function to modify the value of the cell.
+ * @param {any[]} rows - An array of objects that defines the table rows.
+ * @param {number} total - The total number of rows in the table.
+ * @param {number} page - The current page of the table.
+ * @param {string} url - The base url to link each row to.
+ * @param {React.Dispatch<React.SetStateAction<number>>} setPage - A function to update the current page state.
+ * @param {number} pageSize - The number of rows per page.
+ * @param {React.Dispatch<React.SetStateAction<number>>} setPageSize - A function to update the rows per page state.
+ *
+ */
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import {

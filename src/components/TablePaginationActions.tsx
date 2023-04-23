@@ -1,7 +1,14 @@
+/**
+ * A component that provides pagination navigation controls for a table.
+ *
+ * @param {TablePaginationActionsProps} props - The properties of the component.
+ * @param {number} props.count - The total number of rows.
+ * @param {number} props.page - The current page number.
+ * @param {number} props.rowsPerPage - The number of rows to display per page.
+ * @param {(event: React.MouseEvent<HTMLButtonElement>, newPage: number) => void} props.onPageChange - A function that is called when the page changes.
+ */
 import React from "react";
-
 import { IconButton, useTheme, Box } from "@mui/material";
-
 import FirstPageIcon from "@mui/icons-material/FirstPage";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
