@@ -7,12 +7,14 @@ import {
   Button,
   Chip,
   CircularProgress,
+  Divider,
   Grid,
   Link,
   Typography,
 } from "@mui/material";
 import styled from "@mui/styled-engine";
 import { styled as styledComponent } from "@mui/material/styles";
+
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PersonIcon from "@mui/icons-material/Person";
@@ -31,12 +33,17 @@ const StyledButton = styledComponent(Button)(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 
+const StyledDivider = styledComponent(Divider)(({ theme }) => ({
+  margin: theme.spacing(2, 0),
+}));
+
 const AvatarWrapper = styledComponent(Avatar)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
   color: theme.palette.primary.contrastText,
   height: 64,
   width: 64,
   fontSize: 32,
+  fontWeight: "bold",
 }));
 
 export const Platform: React.FC = () => {
@@ -101,13 +108,20 @@ export const Platform: React.FC = () => {
               <Chip label={category.category} size="small" variant="outlined" />
             ))}
           </Box>
-          <Typography variant="subtitle1">
+
+          <Typography gutterBottom>
             <Link component={RouterLink} to={platform.website}>
               {platform.website}
             </Link>
           </Typography>
-          <Typography variant="subtitle1">{platform.country}</Typography>
-          <Typography variant="subtitle1">{platform.notes}</Typography>
+          <Typography variant="subtitle1" gutterBottom>
+            {platform.country}
+          </Typography>
+          <StyledDivider />
+          <Typography variant="h6" gutterBottom sx={{ fontWeight: 400 }}>
+            Notes:
+          </Typography>
+          <Typography variant="body1">{platform.notes}</Typography>
         </Grid>
       </Grid>
     </PlatformWrapper>
