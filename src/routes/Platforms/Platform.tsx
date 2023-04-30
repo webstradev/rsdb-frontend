@@ -40,11 +40,29 @@ const StyledDivider = styledComponent(Divider)(({ theme }) => ({
 const AvatarWrapper = styledComponent(Avatar)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
   color: theme.palette.primary.contrastText,
-  height: 64,
-  width: 64,
-  fontSize: 32,
+  fontSize: "1.5rem",
+  width: theme.spacing(10),
+  height: theme.spacing(10),
   fontWeight: "bold",
 }));
+
+// Gets the first letter of the first three words to display as the abbreviation in the avatar
+const getAvatarLetters = (name: string) => {
+  const matches = name.match(/\b(\w)/g);
+  if (!matches) return "";
+  return matches.join("").substring(0, 3);
+};
+
+// This link turns http into https and ensures each link has https infront of it if it doesn't already
+const safeLink = (url: string) => {
+  if (url.startsWith("http://")) {
+    return url.replace("http://", "https://");
+  } else if (!url.startsWith("https://")) {
+    return `https://${url}`;
+  } else {
+    return url;
+  }
+};
 
 export const Platform: React.FC = () => {
   const { id } = useParams();
@@ -58,7 +76,7 @@ export const Platform: React.FC = () => {
     <PlatformWrapper>
       <Grid container spacing={2} alignItems="center">
         <Grid item xs={2}>
-          <AvatarWrapper>{platform.name[0]}</AvatarWrapper>
+          <AvatarWrapper>{getAvatarLetters(platform.name)}</AvatarWrapper>
         </Grid>
         <Grid item xs={10}>
           <Box display="flex" alignItems="center">
@@ -110,7 +128,7 @@ export const Platform: React.FC = () => {
           </Box>
 
           <Typography gutterBottom>
-            <Link component={RouterLink} to={platform.website}>
+            <Link component={RouterLink} to={safeLink(platform.website)}>
               {platform.website}
             </Link>
           </Typography>
