@@ -34,8 +34,6 @@ export const Platform: React.FC = () => {
   const { id } = useParams();
   const { data: platform, loading } = useApi("get", `/v1/platforms/${id}`);
 
-  console.log(platform);
-
   return (
     <>
       {!loading && platform && (
