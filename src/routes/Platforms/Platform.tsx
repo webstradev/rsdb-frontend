@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useParams, Link as RouterLink } from "react-router-dom";
 import { useApi } from "util/useApi";
 import {
