@@ -23,11 +23,5 @@ spec:
         image: webstradev/rsdb-frontend:latest 
         ports:
         - containerPort: 80
-        readinessProbe:
-            httpGet:
-              path: /
-              port: 80
-            initialDelaySeconds: 10
-            periodSeconds: 3
       imagePullSecrets:
       - name: regcred
