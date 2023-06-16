@@ -11,3 +11,16 @@ spec:
     port: 80
     targetPort: 80
 ---
+kind: Service
+apiVersion: v1
+metadata:
+  name: rsdb-dev-frontend-service 
+  namespace: rsdb
+spec:
+  selector:
+    app: rsdb-dev-frontend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+---
